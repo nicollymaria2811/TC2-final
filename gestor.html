@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Gestão - Transporte Público</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --bg-color: #f1f2f6;
+            --text-dark: #2d3436;
+            --text-gray: #636e72;
+            --white: #ffffff;
+            --danger: #ff7675;
+            --success: #00b894;
+            --warning: #fdcb6e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body { background-color: var(--bg-color); color: var(--text-dark); padding: 20px; }
+
+        /* HEADER */
+        header { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 24px; color: var(--text-dark); }
+        header p { color: var(--text-gray); font-size: 14px; }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
+        .logout-btn { background: var(--danger); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        /* KPI CARDS */
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            border-top: 4px solid var(--primary);
+        }
+
+        .kpi-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
+        .kpi-title { font-size: 12px; font-weight: bold; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; }
+        .kpi-icon { 
+            background: var(--primary); 
+            color: white; 
+            width: 40px; height: 40px; 
+            border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+        
+        .kpi-number { font-size: 36px; font-weight: bold; color: var(--text-dark); margin-bottom: 5px; }
+        .kpi-sub { font-size: 12px; color: var(--text-gray); }
+
+        /* NAVBAR */
+        .nav-tabs {
+            background: var(--white);
+            padding: 0 20px;
+            border-radius: 30px;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 20px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-gray);
+            cursor: pointer;
+            position: relative;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover { color: var(--primary); }
+        
+        .tab-btn.active { color: var(--primary); }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-btn i { margin-right: 8px; }
+
+        /* CONTEÚDO DAS ABAS */
+        .tab-content { display: none; animation: fadeIn 0.3s; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* BOTÕES E TABELAS */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+            transition: 0.2s;
+        }
+        .btn-action:hover { background: #5649c0; transform: translateY(-2px); }
+
+        .data-table {
+            width: 100%;
+            background: var(--white);
+            border-radius: 10px;
+            border-collapse: collapse;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .data-table th, .data-table td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        .data-table th { background: #f8f9fa; color: var(--text-gray); font-weight: 600; font-size: 13px; }
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
+        .st-active { background: #dff9fb; color: var(--success); }
+        .st-inactive { background: #ffeaa7; color: #fdcb6e; }
+        .st-danger { background: #ff7675; color: white; }
+        .st-warning { background: #ffeaa7; color: #fdcb6e; }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px;
+            animation: popIn 0.3s; max-height: 90vh; overflow-y: auto;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;
+        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .loading { text-align: center; padding: 40px; color: var(--text-gray); }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-gray); }
+        .empty-state i { font-size: 48px; margin-bottom: 15px; opacity: 0.5; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>Painel de Gestão - Transporte Público</h1>
+            <p>Sistema de comunicação e gestão para a empresa Santa Terezinha</p>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar" onclick="abrirModalPerfil()">G</div>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+        </div>
+    </header>
+
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-title">Total de Veículos</span>
+                <div class="kpi-icon"><i class="fas fa-bus"></i></div>
+            </div>
+            <div class="kpi-number" id="totalVeiculos">0</div>
+            <div class="kpi-sub" id="veiculosSub">Carregando...</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-title">Motoristas Ativos</span>
+                <div class="kpi-icon"><i class="fas fa-users"></i></div>
+            </div>
+            <div class="kpi-number" id="totalMotoristas">0</div>
+            <div class="kpi-sub" id="motoristasSub">Carregando...</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-title">Chamados Abertos</span>
+                <div class="kpi-icon"><i class="fas fa-tools"></i></div>
+            </div>
+            <div class="kpi-number" style="color: var(--danger)" id="chamadosAbertos">0</div>
+            <div class="kpi-sub" id="chamadosSub">Carregando...</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-title">Mensagens Pendentes</span>
+                <div class="kpi-icon"><i class="fas fa-envelope"></i></div>
+            </div>
+            <div class="kpi-number" id="mensagensPendentes">0</div>
+            <div class="kpi-sub" id="mensagensSub">Carregando...</div>
+        </div>
+    </div>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'avisos')"><i class="fas fa-bullhorn"></i> Gestão de Avisos</button>
+        <button class="tab-btn" onclick="openTab(event, 'horarios')"><i class="fas fa-clock"></i> Gestão de Horários</button>
+        <button class="tab-btn" onclick="openTab(event, 'escalas')"><i class="fas fa-calendar-alt"></i> Gestão de Escalas</button>
+        <button class="tab-btn" onclick="openTab(event, 'chamados')"><i class="fas fa-wrench"></i> Gestão de Chamados</button>
+        <button class="tab-btn" onclick="openTab(event, 'sac')"><i class="fas fa-comments"></i> Mensagens</button>
+    </nav>
+
+    <!-- ABA AVISOS -->
+    <div id="avisos" class="tab-content active">
+        <div class="section-header">
+            <h3>Gerencie avisos e notícias para os passageiros</h3>
+            <button class="btn-action" onclick="toggleModal('modalAviso')">+ Novo Aviso</button>
+        </div>
+        <div id="avisosList">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando avisos...</div>
+        </div>
+    </div>
+
+    <!-- ABA HORÁRIOS -->
+    <div id="horarios" class="tab-content">
+        <div class="section-header">
+            <h3>Gerencie horários e rotas do sistema</h3>
+        </div>
+        <div id="horariosList">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando horários...</div>
+        </div>
+    </div>
+
+    <!-- ABA ESCALAS -->
+    <div id="escalas" class="tab-content">
+        <div class="section-header">
+            <h3>Escalas de motoristas (Fixas e Temporárias)</h3>
+            <button class="btn-action" onclick="toggleModal('modalEscala')">+ Nova Escala</button>
+        </div>
+        <div id="escalasList">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando escalas...</div>
+        </div>
+    </div>
+
+    <!-- ABA CHAMADOS -->
+    <div id="chamados" class="tab-content">
+        <div class="section-header">
+            <h3>Acompanhe chamados de manutenção</h3>
+        </div>
+        <div id="chamadosList">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando chamados...</div>
+        </div>
+    </div>
+
+    <!-- ABA MENSAGENS -->
+    <div id="sac" class="tab-content">
+        <div class="section-header">
+            <h3>Mensagens dos Passageiros</h3>
+        </div>
+        <div id="mensagensList">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando mensagens...</div>
+        </div>
+    </div>
+
+    <!-- MODAL AVISO -->
+    <div id="modalAviso" class="modal">
+        <div class="modal-content">
+            <h3>📢 Criar Novo Aviso</h3>
+            <br>
+            <div class="form-group">
+                <label>Título</label>
+                <input type="text" id="avisoTitulo" placeholder="Ex: Atraso na linha X">
+            </div>
+            <div class="form-group">
+                <label>Mensagem</label>
+                <textarea id="avisoConteudo" rows="4" placeholder="Detalhes..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Prioridade</label>
+                <select id="avisoPrioridade">
+                    <option value="baixa">Baixa</option>
+                    <option value="media">Média</option>
+                    <option value="alta">Alta</option>
+                </select>
+            </div>
+            <div style="display:flex; justify-content: space-between; margin-top: 20px;">
+                <button class="btn-action" style="background:#ccc; color:#333" onclick="toggleModal('modalAviso')">Cancelar</button>
+                <button class="btn-action" onclick="salvarAviso()">Publicar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ESCALA -->
+    <div id="modalEscala" class="modal">
+        <div class="modal-content">
+            <h3>📅 Criar Nova Escala</h3>
+            <br>
+            <div class="form-group">
+                <label>Motorista</label>
+                <select id="escalaMotorista"></select>
+            </div>
+            <div class="form-group">
+                <label>Veículo</label>
+                <select id="escalaVeiculo"></select>
+            </div>
+            <div class="form-group">
+                <label>Rota</label>
+                <select id="escalaRota"></select>
+            </div>
+            <div class="form-group">
+                <label>Data</label>
+                <input type="date" id="escalaData">
+            </div>
+            <div class="form-group">
+                <label>Horário Início</label>
+                <input type="time" id="escalaHorarioInicio">
+            </div>
+            <div class="form-group">
+                <label>Horário Fim</label>
+                <input type="time" id="escalaHorarioFim">
+            </div>
+            <div class="form-group">
+                <label>Turno</label>
+                <select id="escalaTurno">
+                    <option value="manha">Manhã</option>
+                    <option value="tarde">Tarde</option>
+                    <option value="noite">Noite</option>
+                    <option value="integral">Integral</option>
+                </select>
+            </div>
+            <div style="display:flex; justify-content: space-between; margin-top: 20px;">
+                <button class="btn-action" style="background:#ccc; color:#333" onclick="toggleModal('modalEscala')">Cancelar</button>
+                <button class="btn-action" onclick="salvarEscala()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PERFIL -->
+    <div id="modalPerfil" class="modal">
+        <div class="modal-content">
+            <h3>👤 Perfil do Usuário</h3>
+            <br>
+            <div class="form-group">
+                <label>Nome</label>
+                <input type="text" id="modalNome" readonly>
+            </div>
+            <div class="form-group">
+                <label>Tipo</label>
+                <input type="text" id="modalTipo" readonly>
+            </div>
+            <div style="display:flex; justify-content: center; margin-top: 20px;">
+                <button class="btn-action" style="background:#ccc; color:#333" onclick="toggleModal('modalPerfil')">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            const usuario = localStorage.getItem('usuarioAtual');
+            if (!usuario) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // usuarioAtual já está declarado globalmente em app.js
+            usuarioAtual = JSON.parse(usuario);
+            const userAvatar = document.getElementById('userAvatar');
+            if (userAvatar && usuarioAtual.nome) {
+                userAvatar.textContent = usuarioAtual.nome.charAt(0).toUpperCase();
+            }
+            
+            loadDashboard();
+            loadAvisos();
+        });
+
+        // Função para alternar entre as abas
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            setTimeout(() => {
+                document.getElementById(tabName).classList.add("active");
+            }, 10);
+            
+            evt.currentTarget.classList.add("active");
+
+            // Carregar dados da aba
+            switch(tabName) {
+                case 'avisos':
+                    loadAvisos();
+                    break;
+                case 'horarios':
+                    loadHorarios();
+                    break;
+                case 'escalas':
+                    loadEscalas();
+                    break;
+                case 'chamados':
+                    loadChamados();
+                    break;
+                case 'sac':
+                    loadMensagens();
+                    break;
+            }
+        }
+
+        // Função para abrir/fechar o Modal
+        function toggleModal(modalID) {
+            const modal = document.getElementById(modalID);
+            if (modal.style.display === "flex") {
+                modal.style.display = "none";
+            } else {
+                modal.style.display = "flex";
+                if (modalID === 'modalEscala') {
+                    preencherSelectsEscala();
+                }
+            }
+        }
+
+        // Carregar dashboard
+        async function loadDashboard() {
+            try {
+                const [rotas, avisos, chamados, mensagens, veiculos, motoristas] = await Promise.all([
+                    carregarRotas().catch(() => []),
+                    carregarAvisos().catch(() => []),
+                    carregarChamados().catch(() => []),
+                    carregarMensagens().catch(() => []),
+                    carregarVeiculos().catch(() => []),
+                    carregarMotoristas().catch(() => [])
+                ]);
+                
+                const chamadosAbertos = chamados ? chamados.filter(c => c.status === 'aberto' || c.status === 'em_andamento').length : 0;
+                const mensagensPendentes = mensagens ? mensagens.filter(m => !m.respondida && (m.tipo === 'user' || !m.tipo)).length : 0;
+                const veiculosDisponiveis = veiculos ? veiculos.filter(v => v.status === 'disponivel').length : 0;
+                const veiculosManutencao = veiculos ? veiculos.filter(v => v.status === 'manutencao').length : 0;
+                const motoristasAtivos = motoristas ? motoristas.length : 0;
+                
+                document.getElementById('totalVeiculos').textContent = veiculos ? veiculos.length : 0;
+                document.getElementById('veiculosSub').textContent = `${veiculosDisponiveis} disponíveis, ${veiculosManutencao} em manutenção`;
+                document.getElementById('totalMotoristas').textContent = motoristasAtivos;
+                document.getElementById('motoristasSub').textContent = `${motoristasAtivos} ativos`;
+                document.getElementById('chamadosAbertos').textContent = chamadosAbertos;
+                document.getElementById('chamadosSub').textContent = chamadosAbertos > 0 ? `${chamadosAbertos} aguardando` : 'Todos resolvidos';
+                document.getElementById('mensagensPendentes').textContent = mensagensPendentes;
+                document.getElementById('mensagensSub').textContent = mensagensPendentes > 0 ? 'Aguardando resposta' : 'Nenhuma pendente';
+            } catch (error) {
+                console.error('Erro ao carregar dashboard:', error);
+            }
+        }
+
+        // Carregar avisos
+        async function loadAvisos() {
+            const container = document.getElementById('avisosList');
+            if (!container) return;
+            
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando avisos...</div>';
+            
+            try {
+                const avisos = await carregarAvisos();
+                container.innerHTML = '';
+                
+                if (!avisos || avisos.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-bullhorn"></i><p>Nenhum aviso encontrado.</p></div>';
+                    return;
+                }
+                
+                let tableHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Prioridade</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                avisos.forEach(aviso => {
+                    const dataFormatada = aviso.data_publicacao ? new Date(aviso.data_publicacao).toLocaleDateString('pt-BR') : 'N/A';
+                    const prioridadeClass = aviso.prioridade === 'alta' ? 'st-danger' : aviso.prioridade === 'media' ? 'st-warning' : 'st-active';
+                    tableHTML += `
+                        <tr>
+                            <td><strong>${aviso.titulo}</strong></td>
+                            <td><span class="status-badge ${prioridadeClass}">${aviso.prioridade ? aviso.prioridade.toUpperCase() : 'NORMAL'}</span></td>
+                            <td>${dataFormatada}</td>
+                            <td><span class="status-badge st-active">Publicado</span></td>
+                            <td>
+                                <i class="fas fa-edit" style="color: var(--primary); cursor: pointer; margin-right: 10px;" onclick="editarAviso(${aviso.id})"></i>
+                                <i class="fas fa-trash" style="color: var(--danger); cursor: pointer;" onclick="excluirAviso(${aviso.id})"></i>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += '</tbody></table>';
+                container.innerHTML = tableHTML;
+            } catch (error) {
+                console.error('Erro ao carregar avisos:', error);
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar avisos.</p></div>';
+            }
+        }
+
+        // Carregar horários
+        async function loadHorarios() {
+            const container = document.getElementById('horariosList');
+            if (!container) return;
+            
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando horários...</div>';
+            
+            try {
+                const rotas = await carregarRotas();
+                container.innerHTML = '';
+                
+                if (!rotas || rotas.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-clock"></i><p>Nenhuma rota encontrada.</p></div>';
+                    return;
+                }
+                
+                let tableHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Linha</th>
+                                <th>Origem - Destino</th>
+                                <th>Duração</th>
+                                <th>Tarifa</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                rotas.forEach(rota => {
+                    const tarifaFormatada = typeof rota.tarifa === 'number' ? `R$ ${rota.tarifa.toFixed(2).replace('.', ',')}` : rota.tarifa;
+                    const statusClass = rota.ativa ? 'st-active' : 'st-inactive';
+                    tableHTML += `
+                        <tr>
+                            <td><strong>${rota.nome}</strong></td>
+                            <td>${rota.origem} - ${rota.destino}</td>
+                            <td>${rota.duracao || 'N/A'}</td>
+                            <td>${tarifaFormatada}</td>
+                            <td><span class="status-badge ${statusClass}">${rota.ativa ? 'Ativa' : 'Inativa'}</span></td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += '</tbody></table>';
+                container.innerHTML = tableHTML;
+            } catch (error) {
+                console.error('Erro ao carregar horários:', error);
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar horários.</p></div>';
+            }
+        }
+
+        // Carregar escalas
+        async function loadEscalas() {
+            const container = document.getElementById('escalasList');
+            if (!container) return;
+            
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando escalas...</div>';
+            
+            try {
+                const escalas = await carregarEscalas();
+                container.innerHTML = '';
+                
+                if (!escalas || escalas.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-times"></i><p>Nenhuma escala encontrada.</p></div>';
+                    return;
+                }
+                
+                let tableHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Motorista</th>
+                                <th>Veículo</th>
+                                <th>Linha</th>
+                                <th>Data</th>
+                                <th>Horário</th>
+                                <th>Turno</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                escalas.forEach(escala => {
+                    const dataFormatada = escala.data ? new Date(escala.data).toLocaleDateString('pt-BR') : 'N/A';
+                    const horario = escala.horario_inicio ? `${escala.horario_inicio.substring(0, 5)} - ${escala.horario_fim ? escala.horario_fim.substring(0, 5) : ''}` : 'N/A';
+                    const statusClass = escala.status === 'ativa' || escala.status === 'confirmado' ? 'st-active' : escala.status === 'pendente' ? 'st-warning' : 'st-inactive';
+                    tableHTML += `
+                        <tr>
+                            <td>${escala.motorista_nome || escala.motorista || 'N/A'}</td>
+                            <td>${escala.veiculo_numero || escala.veiculo || 'N/A'}</td>
+                            <td>${escala.rota_nome || escala.linha || 'N/A'}</td>
+                            <td>${dataFormatada}</td>
+                            <td>${horario}</td>
+                            <td>${escala.turno || 'Integral'}</td>
+                            <td><span class="status-badge ${statusClass}">${escala.status ? escala.status.toUpperCase() : 'PENDENTE'}</span></td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += '</tbody></table>';
+                container.innerHTML = tableHTML;
+            } catch (error) {
+                console.error('Erro ao carregar escalas:', error);
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar escalas.</p></div>';
+            }
+        }
+
+        // Carregar chamados
+        async function loadChamados() {
+            const container = document.getElementById('chamadosList');
+            if (!container) return;
+            
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando chamados...</div>';
+            
+            try {
+                const chamados = await carregarChamados();
+                container.innerHTML = '';
+                
+                if (!chamados || chamados.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-tools"></i><p>Nenhum chamado encontrado.</p></div>';
+                    return;
+                }
+                
+                let tableHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Veículo</th>
+                                <th>Motorista</th>
+                                <th>Problema</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                chamados.forEach(chamado => {
+                    const statusClass = chamado.status === 'aberto' ? 'st-danger' : chamado.status === 'em_andamento' ? 'st-warning' : 'st-active';
+                    tableHTML += `
+                        <tr>
+                            <td><strong>#${chamado.id}</strong></td>
+                            <td>${chamado.veiculo_numero || chamado.veiculo || 'N/A'}</td>
+                            <td>${chamado.motorista_nome || chamado.motorista || 'N/A'}</td>
+                            <td>${chamado.descricao || chamado.tipo || 'N/A'}</td>
+                            <td><span class="status-badge ${statusClass}">${chamado.status ? chamado.status.toUpperCase() : 'ABERTO'}</span></td>
+                            <td>
+                                <i class="fas fa-edit" style="color: var(--primary); cursor: pointer; margin-right: 10px;" onclick="editarChamado(${chamado.id})" title="Editar"></i>
+                                <i class="fas fa-trash" style="color: var(--danger); cursor: pointer;" onclick="excluirChamado(${chamado.id})" title="Excluir"></i>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += '</tbody></table>';
+                container.innerHTML = tableHTML;
+            } catch (error) {
+                console.error('Erro ao carregar chamados:', error);
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar chamados.</p></div>';
+            }
+        }
+
+        // Carregar mensagens
+        async function loadMensagens() {
+            const container = document.getElementById('mensagensList');
+            if (!container) return;
+            
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando mensagens...</div>';
+            
+            try {
+                const todasMensagens = await carregarMensagens();
+                const mensagens = todasMensagens ? todasMensagens.filter(m => m.tipo === 'user' || !m.tipo) : [];
+                container.innerHTML = '';
+                
+                if (mensagens.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-comments"></i><p>Nenhuma mensagem encontrada.</p></div>';
+                    return;
+                }
+                
+                let tableHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Mensagem</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                mensagens.forEach(mensagem => {
+                    const dataFormatada = mensagem.data_envio ? new Date(mensagem.data_envio).toLocaleDateString('pt-BR') : 'N/A';
+                    const statusClass = mensagem.respondida ? 'st-active' : 'st-warning';
+                    tableHTML += `
+                        <tr>
+                            <td><strong>${mensagem.usuario_nome || mensagem.usuario || 'Passageiro'}</strong></td>
+                            <td>${mensagem.mensagem || mensagem.conteudo || 'Sem mensagem'}</td>
+                            <td>${dataFormatada}</td>
+                            <td><span class="status-badge ${statusClass}">${mensagem.respondida ? 'RESPONDIDA' : 'PENDENTE'}</span></td>
+                            <td>
+                                <button class="btn-action" style="padding: 5px 15px; font-size: 12px;" onclick="responderMensagem(${mensagem.id})">Responder</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += '</tbody></table>';
+                container.innerHTML = tableHTML;
+            } catch (error) {
+                console.error('Erro ao carregar mensagens:', error);
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar mensagens.</p></div>';
+            }
+        }
+
+        // Salvar aviso
+        async function salvarAviso() {
+            const titulo = document.getElementById('avisoTitulo').value;
+            const conteudo = document.getElementById('avisoConteudo').value;
+            const prioridade = document.getElementById('avisoPrioridade').value;
+            
+            if (!titulo || !conteudo) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            try {
+                await criarAvisoAPI({ titulo, conteudo, prioridade, tipo: 'geral' });
+                alert('Aviso criado com sucesso!');
+                toggleModal('modalAviso');
+                document.getElementById('avisoTitulo').value = '';
+                document.getElementById('avisoConteudo').value = '';
+                loadAvisos();
+                loadDashboard();
+            } catch (error) {
+                console.error('Erro ao salvar aviso:', error);
+                alert('Erro ao salvar aviso.');
+            }
+        }
+
+        // Salvar escala
+        async function salvarEscala() {
+            const motoristaId = document.getElementById('escalaMotorista').value;
+            const veiculoId = document.getElementById('escalaVeiculo').value;
+            const rotaId = document.getElementById('escalaRota').value;
+            const data = document.getElementById('escalaData').value;
+            const horarioInicio = document.getElementById('escalaHorarioInicio').value;
+            const horarioFim = document.getElementById('escalaHorarioFim').value;
+            const turno = document.getElementById('escalaTurno').value;
+            
+            if (!motoristaId || !veiculoId || !rotaId || !data || !horarioInicio || !horarioFim) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            try {
+                const dataCompleta = `${data} ${horarioInicio}:00`;
+                const dataFimCompleta = `${data} ${horarioFim}:00`;
+                await apiRequest('escalas', 'POST', {
+                    motorista_id: motoristaId,
+                    veiculo_id: veiculoId,
+                    rota_id: rotaId,
+                    data: data,
+                    horario_inicio: dataCompleta,
+                    horario_fim: dataFimCompleta,
+                    turno: turno
+                });
+                alert('Escala criada com sucesso!');
+                toggleModal('modalEscala');
+                loadEscalas();
+                loadDashboard();
+            } catch (error) {
+                console.error('Erro ao salvar escala:', error);
+                alert('Erro ao salvar escala.');
+            }
+        }
+
+        // Preencher selects da escala
+        async function preencherSelectsEscala() {
+            try {
+                const [motoristas, veiculos, rotas] = await Promise.all([
+                    carregarMotoristas().catch(() => []),
+                    carregarVeiculos().catch(() => []),
+                    carregarRotas().catch(() => [])
+                ]);
+                
+                const selectMotorista = document.getElementById('escalaMotorista');
+                const selectVeiculo = document.getElementById('escalaVeiculo');
+                const selectRota = document.getElementById('escalaRota');
+                
+                selectMotorista.innerHTML = '<option value="">Selecione...</option>';
+                motoristas.forEach(m => {
+                    selectMotorista.innerHTML += `<option value="${m.id}">${m.nome}</option>`;
+                });
+                
+                selectVeiculo.innerHTML = '<option value="">Selecione...</option>';
+                veiculos.forEach(v => {
+                    selectVeiculo.innerHTML += `<option value="${v.id}">${v.numero} - ${v.modelo || ''}</option>`;
+                });
+                
+                selectRota.innerHTML = '<option value="">Selecione...</option>';
+                rotas.forEach(r => {
+                    selectRota.innerHTML += `<option value="${r.id}">${r.nome}</option>`;
+                });
+            } catch (error) {
+                console.error('Erro ao preencher selects:', error);
+            }
+        }
+
+        // Editar aviso
+        async function editarAviso(id) {
+            try {
+                const avisos = await carregarAvisos();
+                const aviso = avisos.find(a => a.id == id);
+                
+                if (!aviso) {
+                    alert('Aviso não encontrado!');
+                    return;
+                }
+                
+                // Preencher modal com dados do aviso
+                document.getElementById('avisoTitulo').value = aviso.titulo || '';
+                document.getElementById('avisoConteudo').value = aviso.conteudo || '';
+                document.getElementById('avisoPrioridade').value = aviso.prioridade || 'baixa';
+                
+                // Mudar título do modal
+                document.querySelector('#modalAviso h3').textContent = '📢 Editar Aviso';
+                
+                // Mudar botão para "Atualizar"
+                const btnSalvar = document.querySelector('#modalAviso .btn-action:last-child');
+                btnSalvar.textContent = 'Atualizar';
+                btnSalvar.onclick = async function() {
+                    await atualizarAviso(id);
+                };
+                
+                // Armazenar ID do aviso sendo editado
+                document.getElementById('modalAviso').dataset.avisoId = id;
+                
+                toggleModal('modalAviso');
+            } catch (error) {
+                console.error('Erro ao carregar aviso:', error);
+                alert('Erro ao carregar aviso para edição.');
+            }
+        }
+
+        // Atualizar aviso
+        async function atualizarAviso(id) {
+            const titulo = document.getElementById('avisoTitulo').value;
+            const conteudo = document.getElementById('avisoConteudo').value;
+            const prioridade = document.getElementById('avisoPrioridade').value;
+            
+            if (!titulo || !conteudo) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            try {
+                await atualizarAvisoAPI(id, { titulo, conteudo, prioridade, tipo: 'geral' });
+                alert('Aviso atualizado com sucesso!');
+                toggleModal('modalAviso');
+                document.getElementById('avisoTitulo').value = '';
+                document.getElementById('avisoConteudo').value = '';
+                document.querySelector('#modalAviso h3').textContent = '📢 Criar Novo Aviso';
+                const btnSalvar = document.querySelector('#modalAviso .btn-action:last-child');
+                btnSalvar.textContent = 'Publicar';
+                btnSalvar.onclick = salvarAviso;
+                loadAvisos();
+                loadDashboard();
+            } catch (error) {
+                console.error('Erro ao atualizar aviso:', error);
+                alert('Erro ao atualizar aviso.');
+            }
+        }
+
+        // Excluir aviso
+        async function excluirAviso(id) {
+            if (!confirm('Tem certeza que deseja excluir este aviso?')) return;
+            
+            try {
+                await deletarAvisoAPI(id);
+                alert('Aviso excluído com sucesso!');
+                loadAvisos();
+                loadDashboard();
+            } catch (error) {
+                console.error('Erro ao excluir aviso:', error);
+                alert('Erro ao excluir aviso.');
+            }
+        }
+
+        // Editar chamado
+        async function editarChamado(id) {
+            try {
+                const chamados = await carregarChamados();
+                const chamado = chamados.find(c => c.id == id);
+                
+                if (!chamado) {
+                    alert('Chamado não encontrado!');
+                    return;
+                }
+                
+                const novoStatus = prompt(`Status atual: ${chamado.status}\n\nNovo status (aberto/em_andamento/resolvido):`, chamado.status);
+                if (!novoStatus) return;
+                
+                if (!['aberto', 'em_andamento', 'resolvido'].includes(novoStatus.toLowerCase())) {
+                    alert('Status inválido! Use: aberto, em_andamento ou resolvido');
+                    return;
+                }
+                
+                await atualizarChamadoAPI(id, { status: novoStatus.toLowerCase() });
+                alert('Chamado atualizado com sucesso!');
+                loadChamados();
+                loadDashboard();
+            } catch (error) {
+                console.error('Erro ao editar chamado:', error);
+                alert('Erro ao editar chamado.');
+            }
+        }
+
+        // Excluir chamado
+        async function excluirChamado(id) {
+            if (!confirm('Tem certeza que deseja excluir este chamado? Esta ação não pode ser desfeita.')) return;
+            
+            try {
+                await deletarChamadoAPI(id);
+                alert('Chamado excluído com sucesso!');
+                loadChamados();
+                loadDashboard();
+            } catch (error) {
+                console.error('Erro ao excluir chamado:', error);
+                alert('Erro ao excluir chamado.');
+            }
+        }
+
+        // Responder mensagem
+        async function responderMensagem(id) {
+            const resposta = prompt('Digite sua resposta:');
+            if (!resposta || !resposta.trim()) return;
+            
+            try {
+                // Primeiro, buscar a mensagem original para obter o usuario_id
+                const todasMensagens = await carregarMensagens();
+                const mensagemOriginal = todasMensagens.find(m => m.id == id);
+                
+                if (!mensagemOriginal) {
+                    alert('Mensagem não encontrada!');
+                    return;
+                }
+                
+                // Marcar mensagem original como respondida
+                await atualizarMensagemAPI(id, { 
+                    respondida: true
+                });
+                
+                // Enviar mensagem de resposta do sistema (usando o mesmo usuario_id da mensagem original)
+                await enviarMensagemAPI({
+                    usuario_id: mensagemOriginal.usuario_id || null,
+                    mensagem: `Resposta do gestor: ${resposta.trim()}`,
+                    tipo: 'system'
+                });
+                
+                alert('Mensagem respondida com sucesso!');
+                loadMensagens();
+                loadDashboard();
+            } catch (error) {
+                console.error('Erro ao responder mensagem:', error);
+                alert('Erro ao responder mensagem: ' + (error.message || 'Erro desconhecido'));
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('usuarioAtual');
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // Abrir modal perfil
+        function abrirModalPerfil() {
+            if (usuarioAtual) {
+                document.getElementById('modalNome').value = usuarioAtual.nome || '';
+                document.getElementById('modalTipo').value = usuarioAtual.tipo || '';
+            }
+            toggleModal('modalPerfil');
+        }
+    </script>
+</body>
+</html>
+

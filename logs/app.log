@@ -1,0 +1,131 @@
+[2025-12-03 18:46:31] [INFO] Login realizado {"username":"user1"}
+[2025-12-03 18:46:38] [INFO] Login realizado {"username":"user1"}
+[2025-12-03 18:48:02] [INFO] Login realizado {"username":"motorista1"}
+[2025-12-03 18:48:08] [INFO] Login realizado {"username":"motorista1"}
+[2025-12-03 18:48:25] [INFO] Login realizado {"username":"motorista1"}
+[2025-12-03 19:06:22] [INFO] Login realizado {"username":"motorista1"}
+[2025-12-03 19:08:54] [INFO] Login realizado {"username":"user1"}
+[2025-12-03 19:10:59] [WARNING] Tentativa de login com senha incorreta {"username":"user1"}
+[2025-12-03 19:11:14] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 19:11:26] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 19:11:42] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 19:11:51] [WARNING] Tentativa de login com senha incorreta {"username":"user1"}
+[2025-12-03 19:12:07] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 19:13:02] [INFO] Login realizado com sucesso {"username":"motorista1","tipo":"motorista"}
+[2025-12-03 19:13:15] [WARNING] Tentativa de login com senha incorreta {"username":"motorista1"}
+[2025-12-03 19:14:37] [WARNING] Tentativa de login com senha incorreta {"username":"user1"}
+[2025-12-03 19:14:43] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 19:15:36] [INFO] Login realizado com sucesso {"username":"motorista1","tipo":"motorista"}
+[2025-12-03 19:16:43] [INFO] Login realizado com sucesso {"username":"motorista1","tipo":"motorista"}
+[2025-12-03 19:16:51] [INFO] Login realizado com sucesso {"username":"mecanico1","tipo":"mecanico"}
+[2025-12-03 19:17:35] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-03 19:23:35] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 19:23:35] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 19:29:35] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 19:30:18] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-03 19:39:22] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 19:40:16] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 20:22:52] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 20:27:09] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-03 20:27:09] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-03 22:04:16] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-03 22:04:16] [WARNING] Tentativa de login com senha incorreta {"username":"gestor1"}
+[2025-12-03 22:04:23] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-03 22:04:23] [WARNING] Tentativa de login com senha incorreta {"username":"gestor1"}
+[2025-12-03 22:04:28] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"senha123\"}","decoded_data":{"username":"gestor1","password":"senha123"}}
+[2025-12-03 22:04:28] [WARNING] Tentativa de login com senha incorreta {"username":"gestor1"}
+[2025-12-03 22:08:09] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"senha123\"}","decoded_data":{"username":"gestor1","password":"senha123"}}
+[2025-12-03 22:08:09] [WARNING] Tentativa de login com senha incorreta {"username":"gestor1"}
+[2025-12-03 22:09:53] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"senha123\"}","decoded_data":{"username":"gestor1","password":"senha123"}}
+[2025-12-03 22:09:53] [WARNING] Tentativa de login com senha incorreta {"username":"gestor1"}
+[2025-12-03 22:10:35] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-03 22:10:35] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-03 22:10:41] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"senha123\"}","decoded_data":{"username":"gestor1","password":"senha123"}}
+[2025-12-03 22:10:41] [WARNING] Tentativa de login com senha incorreta {"username":"gestor1"}
+[2025-12-03 22:10:46] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-03 22:10:46] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-03 22:10:55] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-03 22:10:55] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-03 22:10:58] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-03 22:10:58] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-03 22:11:07] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-03 22:11:07] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-04 00:43:27] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"motorista1\",\"password\":\"password\"}","decoded_data":{"username":"motorista1","password":"password"}}
+[2025-12-04 00:43:28] [INFO] Login realizado com sucesso {"username":"motorista1","tipo":"motorista"}
+[2025-12-04 00:44:20] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-04 00:44:21] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-04 00:56:18] [DEBUG] POST Request {"endpoint":"mensagens","path":"mensagens","raw_input":"{\"usuario_id\":1,\"mensagem\":\"OIII\",\"tipo\":\"user\"}","decoded_data":{"usuario_id":1,"mensagem":"OIII","tipo":"user"}}
+[2025-12-04 00:56:18] [DEBUG] enviarMensagem recebeu {"data":{"usuario_id":1,"mensagem":"OIII","tipo":"user"}}
+[2025-12-04 00:56:18] [INFO] Mensagem enviada {"mensagem_id":"1","dados":{"usuario_id":1,"mensagem":"OIII","tipo":"user"}}
+[2025-12-04 00:56:45] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-04 00:56:45] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-04 00:57:46] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-04 00:57:46] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-04 01:00:26] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-04 01:00:26] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-04 01:00:32] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-04 01:00:32] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-04 01:15:36] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-04 01:15:37] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-04 01:21:08] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-04 01:21:09] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-04 01:35:51] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-04 01:35:52] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-04 01:40:22] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-04 01:40:23] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-04 01:40:28] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-04 01:40:29] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-04 01:43:37] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-04 01:43:38] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-04 01:46:53] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"mecanico1\",\"password\":\"password\"}","decoded_data":{"username":"mecanico1","password":"password"}}
+[2025-12-04 01:46:53] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"mecanico1\",\"password\":\"password\"}","decoded_data":{"username":"mecanico1","password":"password"}}
+[2025-12-04 01:46:54] [INFO] Login realizado com sucesso {"username":"mecanico1","tipo":"mecanico"}
+[2025-12-04 01:46:55] [INFO] Login realizado com sucesso {"username":"mecanico1","tipo":"mecanico"}
+[2025-12-04 01:49:41] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"motorista1\",\"password\":\"password\"}","decoded_data":{"username":"motorista1","password":"password"}}
+[2025-12-04 01:49:42] [INFO] Login realizado com sucesso {"username":"motorista1","tipo":"motorista"}
+[2025-12-04 01:58:33] [DEBUG] POST Request {"endpoint":"chamados","path":"chamados","raw_input":"{\"motorista_id\":2,\"veiculo_id\":1,\"tipo\":\"pneu\",\"descricao\":\"trocar\",\"urgencia\":\"baixa\"}","decoded_data":{"motorista_id":2,"veiculo_id":1,"tipo":"pneu","descricao":"trocar","urgencia":"baixa"}}
+[2025-12-04 01:58:33] [DEBUG] criarChamado recebeu {"data":{"motorista_id":2,"veiculo_id":1,"tipo":"pneu","descricao":"trocar","urgencia":"baixa"}}
+[2025-12-04 01:58:33] [INFO] Chamado criado {"chamado_id":"1","dados":{"motorista_id":2,"veiculo_id":1,"tipo":"pneu","descricao":"trocar","urgencia":"baixa"}}
+[2025-12-04 01:59:08] [DEBUG] POST Request {"endpoint":"chamados","path":"chamados","raw_input":"{\"motorista_id\":2,\"veiculo_id\":1,\"tipo\":\"mecanico\",\"descricao\":\"teste\",\"urgencia\":\"baixa\"}","decoded_data":{"motorista_id":2,"veiculo_id":1,"tipo":"mecanico","descricao":"teste","urgencia":"baixa"}}
+[2025-12-04 01:59:08] [DEBUG] criarChamado recebeu {"data":{"motorista_id":2,"veiculo_id":1,"tipo":"mecanico","descricao":"teste","urgencia":"baixa"}}
+[2025-12-04 01:59:08] [INFO] Chamado criado {"chamado_id":"2","dados":{"motorista_id":2,"veiculo_id":1,"tipo":"mecanico","descricao":"teste","urgencia":"baixa"}}
+[2025-12-04 01:59:22] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"motorista1\",\"password\":\"password\"}","decoded_data":{"username":"motorista1","password":"password"}}
+[2025-12-04 01:59:23] [INFO] Login realizado com sucesso {"username":"motorista1","tipo":"motorista"}
+[2025-12-04 01:59:28] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"mecanico1\",\"password\":\"password\"}","decoded_data":{"username":"mecanico1","password":"password"}}
+[2025-12-04 01:59:28] [INFO] Login realizado com sucesso {"username":"mecanico1","tipo":"mecanico"}
+[2025-12-04 01:59:39] [INFO] Chamado atualizado {"chamado_id":"1"}
+[2025-12-04 01:59:51] [INFO] Chamado atualizado {"chamado_id":"1"}
+[2025-12-04 01:59:59] [INFO] Chamado atualizado {"chamado_id":"2"}
+[2025-12-04 02:00:08] [INFO] Chamado atualizado {"chamado_id":"2"}
+[2025-12-04 02:01:30] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-04 02:01:31] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-04 02:02:46] [DEBUG] POST Request {"endpoint":"escalas","path":"escalas","raw_input":"{\"motorista_id\":\"2\",\"veiculo_id\":\"2\",\"rota_id\":\"6\",\"data\":\"2025-12-04\",\"horario_inicio\":\"2025-12-04 03:00:00\",\"horario_fim\":\"2025-12-04 03:30:00\",\"turno\":\"manha\"}","decoded_data":{"motorista_id":"2","veiculo_id":"2","rota_id":"6","data":"2025-12-04","horario_inicio":"2025-12-04 03:00:00","horario_fim":"2025-12-04 03:30:00","turno":"manha"}}
+[2025-12-04 02:02:46] [DEBUG] criarEscala recebeu {"data":{"motorista_id":"2","veiculo_id":"2","rota_id":"6","data":"2025-12-04","horario_inicio":"2025-12-04 03:00:00","horario_fim":"2025-12-04 03:30:00","turno":"manha"}}
+[2025-12-04 02:02:46] [INFO] Escala criada {"escala_id":"1","dados":{"motorista_id":"2","veiculo_id":"2","rota_id":"6","data":"2025-12-04","horario_inicio":"2025-12-04 03:00:00","horario_fim":"2025-12-04 03:30:00","turno":"manha"}}
+[2025-12-04 02:11:59] [INFO] Aviso atualizado {"aviso_id":"1"}
+[2025-12-04 02:12:06] [INFO] Aviso deletado {"aviso_id":"1"}
+[2025-12-04 02:12:45] [INFO] Chamado atualizado {"chamado_id":"2"}
+[2025-12-04 02:13:05] [INFO] Chamado atualizado {"chamado_id":"1"}
+[2025-12-04 02:13:14] [INFO] Chamado deletado {"chamado_id":"1"}
+[2025-12-04 02:13:27] [ERROR] Erro ao atualizar mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'resposta' in 'field list'
+[2025-12-04 02:14:07] [ERROR] Erro ao atualizar mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'resposta' in 'field list'
+[2025-12-04 02:19:51] [INFO] Mensagem atualizada {"mensagem_id":"1","dados":{"respondida":true}}
+[2025-12-04 02:19:51] [DEBUG] POST Request {"endpoint":"mensagens","path":"mensagens","raw_input":"{\"usuario_id\":1,\"mensagem\":\"Resposta do gestor: ok\",\"tipo\":\"system\"}","decoded_data":{"usuario_id":1,"mensagem":"Resposta do gestor: ok","tipo":"system"}}
+[2025-12-04 02:19:51] [DEBUG] enviarMensagem recebeu {"data":{"usuario_id":1,"mensagem":"Resposta do gestor: ok","tipo":"system"}}
+[2025-12-04 02:19:51] [INFO] Mensagem enviada {"mensagem_id":"2","dados":{"usuario_id":1,"mensagem":"Resposta do gestor: ok","tipo":"system"}}
+[2025-12-04 02:20:05] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-04 02:20:05] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-04 02:20:09] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-04 02:20:09] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-04 02:20:39] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"motorista1\",\"password\":\"password\"}","decoded_data":{"username":"motorista1","password":"password"}}
+[2025-12-04 02:20:39] [INFO] Login realizado com sucesso {"username":"motorista1","tipo":"motorista"}
+[2025-12-04 02:30:45] [DEBUG] POST Request {"endpoint":"inicio-linha","path":"inicio-linha","raw_input":"{\"motorista_id\":2,\"escala_id\":1,\"rota_id\":6,\"veiculo_id\":2,\"latitude\":null,\"longitude\":null}","decoded_data":{"motorista_id":2,"escala_id":1,"rota_id":6,"veiculo_id":2,"latitude":null,"longitude":null}}
+[2025-12-04 02:30:46] [INFO] Início de linha criado {"inicio_linha_id":"1"}
+[2025-12-04 02:31:04] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"motorista1\",\"password\":\"password\"}","decoded_data":{"username":"motorista1","password":"password"}}
+[2025-12-04 02:31:04] [INFO] Login realizado com sucesso {"username":"motorista1","tipo":"motorista"}
+[2025-12-04 02:31:15] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"mecanico1\",\"password\":\"password\"}","decoded_data":{"username":"mecanico1","password":"password"}}
+[2025-12-04 02:31:15] [INFO] Login realizado com sucesso {"username":"mecanico1","tipo":"mecanico"}
+[2025-12-04 02:31:23] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-04 02:31:24] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-04 02:31:35] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-04 02:31:35] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
