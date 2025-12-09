@@ -9,6 +9,58 @@ let statusLinha = 'parado'; // Para controle de linha do motorista
 // Configuração da API
 const API_BASE_URL = 'php/api.php';
 
+/**
+ * Garante que o cookie __test (proteção InfinityFree) exista.
+ * Usa um iframe invisível para carregar a URL que executa o AES e cria o cookie.
+ * Retorna uma Promise que resolves quando o cookie existir ou rejeita após timeout.
+ *
+ * Uso: await ensureTestCookie();
+ */
+
+function hasTestCookie() {
+  return document.cookie.split(';').map(s => s.trim()).some(c => c.startsWith('__test='));
+}
+
+function createHiddenIframe(src) {
+  const ifr = document.createElement('iframe');
+  ifr.style.width = '1px';
+  ifr.style.height = '1px';
+  ifr.style.position = 'absolute';
+  ifr.style.left = '-9999px';
+  ifr.style.top = '-9999px';
+  ifr.style.border = '0';
+  ifr.src = src;
+  document.body.appendChild(ifr);
+  return ifr;
+}
+
+function ensureTestCookie({ url = 'http://santaterezinha.free.nf/php/api.php/login?i=1', timeout = 10000, interval = 300 } = {}) {
+  return new Promise((resolve, reject) => {
+    if (hasTestCookie()) {
+      return resolve(true);
+    }
+
+    // cria iframe que executa o script da hospedagem e tenta criar o cookie
+    const ifr = createHiddenIframe(url);
+
+    let elapsed = 0;
+    const timer = setInterval(() => {
+      if (hasTestCookie()) {
+        clearInterval(timer);
+        // remove iframe limpo
+        try { ifr.remove(); } catch (e) {}
+        return resolve(true);
+      }
+      elapsed += interval;
+      if (elapsed >= timeout) {
+        clearInterval(timer);
+        try { ifr.remove(); } catch (e) {}
+        return reject(new Error('Timeout: cookie __test não foi criado'));
+      }
+    }, interval);
+  });
+}
+
 // ===== MÓDULO DE API =====
 async function apiRequest(endpoint, method = 'GET', data = null) {
     try {
@@ -24,7 +76,24 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
         }
         
         const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
-        const result = await response.json();
+        
+        // Verificar se a resposta é JSON antes de fazer parse
+        const contentType = response.headers.get('content-type') || '';
+        const text = await response.text();
+        
+        if (!contentType.includes('application/json')) {
+            console.error('Resposta não é JSON:', text.substring(0, 200));
+            throw new Error('A API retornou uma resposta inválida (não é JSON)');
+        }
+        
+        let result;
+        try {
+            result = JSON.parse(text);
+        } catch (parseError) {
+            console.error('Erro ao fazer parse do JSON:', parseError);
+            console.error('Resposta recebida:', text.substring(0, 500));
+            throw new Error('Erro ao processar resposta da API');
+        }
         
         if (!response.ok || !result.success) {
             throw new Error(result.error || 'Erro na requisição');
@@ -77,16 +146,33 @@ async function carregarMotoristas() {
 
 async function fazerLoginAPI(username, password) {
     try {
+        // Garantir cookie da InfinityFree
+        await ensureTestCookie().catch(err => {
+            console.warn('Falha ao garantir cookie __test:', err.message);
+            // opcional: continuar tentando mesmo assim ou abortar
+        });
+
+        // agora executar o fetch normal (o cookie deve estar presente)
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: 'include', // importante se backend depende de cookies
             body: JSON.stringify({ username, password })
         };
         
         const response = await fetch(`${API_BASE_URL}/login`, options);
-        const result = await response.json();
+        
+        // Verificar se a resposta é JSON
+        const contentType = response.headers.get('content-type') || '';
+        const text = await response.text();
+        if (!contentType.includes('application/json')) {
+            console.error('Resposta inesperada:', text);
+            throw new Error('A API não retornou JSON');
+        }
+        
+        const result = JSON.parse(text);
         
         if (!response.ok || !result.success) {
             throw new Error(result.error || 'Erro na requisição');

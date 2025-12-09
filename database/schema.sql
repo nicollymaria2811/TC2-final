@@ -1,12 +1,3 @@
--- Schema do Banco de Dados - Santa Terezinha Transporte
--- Estrutura para integração futura com PHP/MySQL
-
--- Criar banco de dados
-CREATE DATABASE IF NOT EXISTS santa_terezinha_transporte 
-CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-USE santa_terezinha_transporte;
-
 -- Tabela de usuários
 CREATE TABLE usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,

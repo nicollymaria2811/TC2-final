@@ -129,3 +129,49 @@
 [2025-12-04 02:31:24] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
 [2025-12-04 02:31:35] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
 [2025-12-04 02:31:35] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-05 19:37:14] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-05 19:37:15] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-05 19:37:38] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"senha123\"}","decoded_data":{"username":"user1","password":"senha123"}}
+[2025-12-05 19:37:38] [WARNING] Tentativa de login com senha incorreta {"username":"user1"}
+[2025-12-05 19:40:18] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"senha123\"}","decoded_data":{"username":"user1","password":"senha123"}}
+[2025-12-05 19:40:18] [WARNING] Tentativa de login com senha incorreta {"username":"user1"}
+[2025-12-05 19:40:27] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"senha123\"}","decoded_data":{"username":"user1","password":"senha123"}}
+[2025-12-05 19:40:27] [WARNING] Tentativa de login com senha incorreta {"username":"user1"}
+[2025-12-05 19:40:31] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-05 19:40:31] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-05 20:07:07] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-05 20:07:07] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-05 20:21:14] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-05 20:21:14] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-05 20:21:25] [INFO] Aviso atualizado {"aviso_id":"2"}
+[2025-12-05 20:24:42] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"mecanico1\",\"password\":\"password\"}","decoded_data":{"username":"mecanico1","password":"password"}}
+[2025-12-05 20:24:42] [INFO] Login realizado com sucesso {"username":"mecanico1","tipo":"mecanico"}
+[2025-12-05 20:24:50] [INFO] Chamado atualizado {"chamado_id":"2"}
+[2025-12-05 20:26:25] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"mecanico1\",\"password\":\"password\"}","decoded_data":{"username":"mecanico1","password":"password"}}
+[2025-12-05 20:26:25] [INFO] Login realizado com sucesso {"username":"mecanico1","tipo":"mecanico"}
+[2025-12-05 20:26:39] [INFO] Chamado atualizado {"chamado_id":"2"}
+[2025-12-05 20:27:53] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"mecanico1\",\"password\":\"password\"}","decoded_data":{"username":"mecanico1","password":"password"}}
+[2025-12-05 20:27:53] [INFO] Login realizado com sucesso {"username":"mecanico1","tipo":"mecanico"}
+[2025-12-05 20:27:59] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"mecanico1\",\"password\":\"password\"}","decoded_data":{"username":"mecanico1","password":"password"}}
+[2025-12-05 20:27:59] [INFO] Login realizado com sucesso {"username":"mecanico1","tipo":"mecanico"}
+[2025-12-05 20:29:16] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-05 20:29:16] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-05 20:29:26] [INFO] Mensagem atualizada {"mensagem_id":"1","dados":{"respondida":true}}
+[2025-12-05 20:29:26] [DEBUG] POST Request {"endpoint":"mensagens","path":"mensagens","raw_input":"{\"usuario_id\":1,\"mensagem\":\"Resposta do gestor: ok\",\"tipo\":\"system\"}","decoded_data":{"usuario_id":1,"mensagem":"Resposta do gestor: ok","tipo":"system"}}
+[2025-12-05 20:29:26] [DEBUG] enviarMensagem recebeu {"data":{"usuario_id":1,"mensagem":"Resposta do gestor: ok","tipo":"system"}}
+[2025-12-05 20:29:26] [INFO] Mensagem enviada {"mensagem_id":"3","dados":{"usuario_id":1,"mensagem":"Resposta do gestor: ok","tipo":"system"}}
+[2025-12-05 20:29:41] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-05 20:29:41] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-05 20:29:51] [DEBUG] POST Request {"endpoint":"mensagens","path":"mensagens","raw_input":"{\"usuario_id\":1,\"mensagem\":\"teste1263\",\"tipo\":\"user\"}","decoded_data":{"usuario_id":1,"mensagem":"teste1263","tipo":"user"}}
+[2025-12-05 20:29:51] [DEBUG] enviarMensagem recebeu {"data":{"usuario_id":1,"mensagem":"teste1263","tipo":"user"}}
+[2025-12-05 20:29:51] [INFO] Mensagem enviada {"mensagem_id":"4","dados":{"usuario_id":1,"mensagem":"teste1263","tipo":"user"}}
+[2025-12-05 20:30:07] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-05 20:30:07] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}
+[2025-12-05 20:30:14] [INFO] Mensagem atualizada {"mensagem_id":"4","dados":{"respondida":true}}
+[2025-12-05 20:30:14] [DEBUG] POST Request {"endpoint":"mensagens","path":"mensagens","raw_input":"{\"usuario_id\":1,\"mensagem\":\"Resposta do gestor: ok\",\"tipo\":\"system\"}","decoded_data":{"usuario_id":1,"mensagem":"Resposta do gestor: ok","tipo":"system"}}
+[2025-12-05 20:30:14] [DEBUG] enviarMensagem recebeu {"data":{"usuario_id":1,"mensagem":"Resposta do gestor: ok","tipo":"system"}}
+[2025-12-05 20:30:14] [INFO] Mensagem enviada {"mensagem_id":"5","dados":{"usuario_id":1,"mensagem":"Resposta do gestor: ok","tipo":"system"}}
+[2025-12-05 20:30:26] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"user1\",\"password\":\"password\"}","decoded_data":{"username":"user1","password":"password"}}
+[2025-12-05 20:30:26] [INFO] Login realizado com sucesso {"username":"user1","tipo":"passageiro"}
+[2025-12-05 20:46:56] [DEBUG] POST Request {"endpoint":"login","path":"login","raw_input":"{\"username\":\"gestor1\",\"password\":\"password\"}","decoded_data":{"username":"gestor1","password":"password"}}
+[2025-12-05 20:46:56] [INFO] Login realizado com sucesso {"username":"gestor1","tipo":"gestor"}

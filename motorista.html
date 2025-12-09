@@ -264,9 +264,13 @@
         </div>
     </div>
     
-    <div id="controle" class="tab-content">
+        <div id="controle" class="tab-content">
         <div class="section-header">
             <h3>Controle de Linha</h3>
+            <p style="color: var(--text-gray); font-size: 0.9rem; margin-top: 5px;">
+                <i class="fas fa-link" style="margin-right: 5px;"></i>
+                Conectado com sua <a href="#" onclick="openTab(event, 'escala')" style="color: var(--primary); text-decoration: underline; font-weight: 600;">escala de hoje</a>
+            </p>
         </div>
         
         <!-- Status da Linha -->
@@ -307,7 +311,7 @@
                 </button>
                 <p style="margin-top: 15px; color: var(--text-gray); font-size: 0.9rem;">
                     <i class="fas fa-info-circle" style="margin-right: 5px;"></i>
-                    O veículo e a linha são carregados automaticamente da sua escala
+                    Os dados são carregados automaticamente da sua <a href="#" onclick="openTab(event, 'escala')" style="color: var(--primary); text-decoration: underline; font-weight: 600;">escala de hoje</a>
                 </p>
             </div>
         </div>
@@ -444,6 +448,85 @@
         let historicoLinhas = [];
         let escalaAtual = null; // Armazena a escala atual do motorista
 
+        // Função auxiliar para normalizar data (garante comparação correta)
+        function normalizarData(data) {
+            if (!data) return null;
+            // Se já está em formato YYYY-MM-DD, retorna como está
+            if (typeof data === 'string' && /^\d{4}-\d{2}-\d{2}/.test(data)) {
+                return data.split('T')[0]; // Remove hora se houver
+            }
+            // Tenta converter para Date e depois para YYYY-MM-DD
+            try {
+                const date = new Date(data);
+                return date.toISOString().split('T')[0];
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Função auxiliar para buscar escala de hoje ou próxima disponível (usada em todas as funções)
+        async function buscarEscalaHoje() {
+            try {
+                const escalas = await carregarEscalas();
+                if (!escalas || escalas.length === 0) {
+                    console.log('Nenhuma escala retornada da API');
+                    return null;
+                }
+                
+                const hoje = new Date().toISOString().split('T')[0];
+                const escalasMotorista = escalas.filter(e => e.motorista_id === usuarioAtual.id);
+                
+                if (escalasMotorista.length === 0) {
+                    console.log('Nenhuma escala encontrada para este motorista');
+                    return null;
+                }
+                
+                // Debug: verificar escalas encontradas
+                console.log('Escalas do motorista:', escalasMotorista);
+                console.log('Data de hoje:', hoje);
+                
+                // Primeiro, tentar encontrar escala de hoje
+                let escalaEncontrada = escalasMotorista.find(e => {
+                    const dataEscala = normalizarData(e.data);
+                    const dataOriginal = e.data;
+                    console.log(`Comparando: ${dataEscala} === ${hoje} (original: ${dataOriginal})`);
+                    return dataEscala === hoje;
+                });
+                
+                // Se não encontrou para hoje, buscar a próxima escala disponível (hoje ou futura)
+                if (!escalaEncontrada) {
+                    const hojeTimestamp = new Date(hoje).getTime();
+                    const escalasFuturas = escalasMotorista
+                        .map(e => {
+                            const dataNormalizada = normalizarData(e.data);
+                            return {
+                                ...e,
+                                dataNormalizada: dataNormalizada,
+                                timestamp: new Date(dataNormalizada).getTime()
+                            };
+                        })
+                        .filter(e => e.timestamp >= hojeTimestamp && !isNaN(e.timestamp))
+                        .sort((a, b) => a.timestamp - b.timestamp); // Ordenar por data mais próxima
+                    
+                    if (escalasFuturas.length > 0) {
+                        escalaEncontrada = escalasFuturas[0];
+                        console.log('Escala futura encontrada (próxima disponível):', escalaEncontrada);
+                    }
+                } else {
+                    console.log('Escala de hoje encontrada:', escalaEncontrada);
+                }
+                
+                if (!escalaEncontrada) {
+                    console.log('Nenhuma escala encontrada (hoje ou futura)');
+                }
+                
+                return escalaEncontrada || null;
+            } catch (error) {
+                console.error('Erro ao buscar escala:', error);
+                return null;
+            }
+        }
+
         // Inicialização
         document.addEventListener('DOMContentLoaded', async function() {
             // Verificar se usuário está logado
@@ -494,6 +577,7 @@
                     loadEscalas();
                     break;
                 case 'controle':
+                    // Sempre recarregar status da linha para garantir dados atualizados da escala
                     loadStatusLinha();
                     break;
             }
@@ -502,17 +586,19 @@
         // Carregar dashboard
         async function loadDashboard() {
             try {
-                const escalas = await carregarEscalas();
-                const hoje = new Date().toISOString().split('T')[0];
-                const escalaHoje = escalas.find(e => e.motorista_id === usuarioAtual.id && e.data === hoje);
+                // Usar a função auxiliar para garantir sincronização
+                const escalaHoje = await buscarEscalaHoje();
                 
                 document.getElementById('statusLinha').textContent = statusLinha === 'parado' ? 'Parada' : 'Em Operação';
                 document.getElementById('statusDesc').textContent = statusLinha === 'parado' ? 'Aguardando início da jornada' : 'Linha em operação';
                 
                 if (escalaHoje) {
                     const horarioInicio = escalaHoje.horario_inicio || escalaHoje.horario?.split(' - ')[0] || 'N/A';
+                    const horarioFim = escalaHoje.horario_fim || escalaHoje.horario?.split(' - ')[1] || '';
+                    const linhaNome = escalaHoje.rota_nome || escalaHoje.linha || 'N/A';
+                    
                     document.getElementById('escalaHoje').textContent = horarioInicio;
-                    document.getElementById('escalaDesc').textContent = escalaHoje.rota_nome || escalaHoje.linha || 'N/A';
+                    document.getElementById('escalaDesc').textContent = linhaNome;
                 } else {
                     document.getElementById('escalaHoje').textContent = 'N/A';
                     document.getElementById('escalaDesc').textContent = 'Sem escala para hoje';
@@ -543,7 +629,8 @@
                 const hoje = new Date().toISOString().split('T')[0];
                 
                 escalasMotorista.forEach(escala => {
-                    const isHoje = escala.data === hoje;
+                    const dataEscala = normalizarData(escala.data);
+                    const isHoje = dataEscala === hoje;
                     
                     const escalaCard = document.createElement('div');
                     escalaCard.className = 'card';
@@ -575,6 +662,14 @@
                                 <span style="background: ${escala.status === 'confirmado' ? 'var(--success)' : escala.status === 'pendente' ? 'var(--accent)' : 'var(--danger)'}; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.8rem;">${escala.status}</span>
                             </div>
                         </div>
+                        ${isHoje ? `
+                        <div style="margin-top: 15px; padding: 12px; background: #e0f2fe; border-left: 4px solid var(--primary); border-radius: 8px;">
+                            <p style="margin: 0; color: var(--text-dark); font-size: 0.9rem;">
+                                <i class="fas fa-link" style="margin-right: 5px; color: var(--primary);"></i>
+                                Esta escala está conectada ao <a href="#" onclick="openTab(event, 'controle')" style="color: var(--primary); text-decoration: underline; font-weight: 600;">Controle de Linha</a>
+                            </p>
+                        </div>
+                        ` : ''}
                     `;
                     container.appendChild(escalaCard);
                 });
@@ -587,17 +682,43 @@
         // Carregar status da linha
         async function loadStatusLinha() {
             try {
-                const escalas = await carregarEscalas();
-                const hoje = new Date().toISOString().split('T')[0];
-                escalaAtual = escalas.find(e => e.motorista_id === usuarioAtual.id && e.data === hoje);
+                // Sempre buscar a escala de hoje usando a função auxiliar para garantir sincronização
+                escalaAtual = await buscarEscalaHoje();
             
             if (!escalaAtual) {
                 const statusTitle = document.getElementById('statusTitle');
                 const statusSubtitle = document.getElementById('statusSubtitle');
                 const btnControle = document.getElementById('btnControle');
-                if (statusTitle) statusTitle.textContent = 'Sem Escala';
-                if (statusSubtitle) statusSubtitle.textContent = 'Nenhuma escala para hoje';
-                if (btnControle) btnControle.style.display = 'none';
+                const veiculoAtual = document.getElementById('veiculoAtual');
+                const horarioAtual = document.getElementById('horarioAtual');
+                const linhaAtual = document.getElementById('linhaAtual');
+                const statusIcon = document.getElementById('statusIcon');
+                
+                if (statusTitle) statusTitle.textContent = 'Sem Escala para Hoje';
+                if (statusSubtitle) {
+                    statusSubtitle.innerHTML = 'Nenhuma escala encontrada para hoje. <a href="#" onclick="openTab(event, \'escala\')" style="color: var(--primary); text-decoration: underline; font-weight: 600;">Ver Minha Escala</a>';
+                }
+                if (btnControle) {
+                    btnControle.style.display = 'none';
+                }
+                if (veiculoAtual) veiculoAtual.textContent = 'N/A';
+                if (horarioAtual) horarioAtual.textContent = 'N/A';
+                if (linhaAtual) linhaAtual.textContent = 'N/A';
+                if (statusIcon) {
+                    statusIcon.innerHTML = '<i class="fas fa-calendar-times"></i>';
+                    statusIcon.style.background = '#fee2e2';
+                    statusIcon.style.color = '#ef4444';
+                }
+                
+                // Atualizar indicador visual
+                const statusIndicator = document.getElementById('statusIndicator');
+                const statusText = document.getElementById('statusText');
+                if (statusIndicator) {
+                    statusIndicator.style.background = '#ef4444';
+                }
+                if (statusText) {
+                    statusText.textContent = 'Status: Sem Escala';
+                }
                 return;
             }
             
@@ -614,11 +735,12 @@
             // Preencher veiculoSelecionado automaticamente da escala
             veiculoSelecionado = escalaAtual.veiculo_numero || escalaAtual.veiculo || null;
             
-            // Habilitar botão de controle automaticamente
+            // Habilitar botão de controle automaticamente quando há escala
             if (btnControle) {
                 btnControle.disabled = false;
                 btnControle.style.opacity = '1';
                 btnControle.style.cursor = 'pointer';
+                btnControle.style.display = 'block';
             }
             
             const statusIcon = document.getElementById('statusIcon');
@@ -687,16 +809,17 @@
             }
             
             if (statusLinha === 'parado') {
-                // Buscar escala atual do motorista
+                // Buscar escala atual do motorista usando função auxiliar
                 try {
-                    const escalas = await carregarEscalas();
-                    const hoje = new Date().toISOString().split('T')[0];
-                    const escalaHoje = escalas.find(e => e.motorista_id === usuarioAtual.id && e.data === hoje);
+                    const escalaHoje = await buscarEscalaHoje();
                     
                     if (!escalaHoje) {
                         showNotification('Nenhuma escala encontrada para hoje!', 'error');
                         return;
                     }
+                    
+                    // Atualizar escalaAtual para garantir sincronização
+                    escalaAtual = escalaHoje;
                     
                     // Obter localização atual
                     let latitude = null;
@@ -723,6 +846,10 @@
                         statusLinha = 'rodando';
                         adicionarLinhaHistorico('iniciada');
                         showNotification('Linha iniciada com sucesso! Boa jornada!', 'success');
+                        
+                        // Atualizar status em todas as áreas imediatamente
+                        await loadStatusLinha();
+                        await loadDashboard();
                     } else {
                         showNotification('Erro ao iniciar linha: ' + (response.error || 'Erro desconhecido'), 'error');
                     }
@@ -741,10 +868,11 @@
                         showNotification('Parabéns! Você completou todas as suas linhas de hoje. Tenha um ótimo descanso!', 'success');
                     }
                 }, 2000);
+                
+                // Atualizar status em todas as áreas imediatamente
+                await loadStatusLinha();
+                await loadDashboard();
             }
-            
-            loadStatusLinha();
-            loadDashboard();
         }
 
         // Adicionar linha ao histórico

@@ -5,16 +5,16 @@
  */
 
 // Configurações do banco de dados
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'santa_terezinha_transporte');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', 'sql110.infinityfree.com');
+define('DB_NAME', 'if0_40403173_santa_terezinha_transporte');
+define('DB_USER', 'if0_40403173');
+define('DB_PASS', 'hYCkgLtYV6Hi');
 define('DB_CHARSET', 'utf8mb4');
 
 // Configurações da aplicação
 define('APP_NAME', 'Santa Terezinha Transporte');
 define('APP_VERSION', '1.0.0');
-define('APP_URL', 'http://localhost/SantaTerezinhaBus_Antigo');
+define('APP_URL', 'http://santaterezinha.free.nf/');
 
 // Configurações de segurança
 define('JWT_SECRET', 'santa_terezinha_secret_key_2024');
